@@ -24,8 +24,15 @@ class Hand(val cards: Set[Card]) {
 
   def groupedByRank = cards.groupBy(_.rank)
 
+  def hasAceHighStraight(sorted: Seq[Card]): Boolean = {
+    return (sorted.map(_.rank).equals(Seq(1, 10, 11, 12, 13)))
+  }
+
   def hasStraight: Boolean = {
     val sorted = cards.toList.sortBy(_.rank)
+    if (hasAceHighStraight(sorted)) {
+      return true
+    }
     for (cardIdx <- 1 to 4) {
       if (sorted(cardIdx).rank - sorted(cardIdx - 1).rank != 1) {
         return false
@@ -34,8 +41,16 @@ class Hand(val cards: Set[Card]) {
     return true
   }
 
+  def hasStraightFlush: Boolean = {
+    val groupedBySuit = cards.groupBy(_.suit)
+    return hasStraight && groupedBySuit.size == 1
+  }
+
   def getRank = {
-    if (hasFourOfAKind) {
+    if (hasStraightFlush) {
+      HandType.StraightFlush
+    }
+    else if (hasFourOfAKind) {
       HandType.FourOfAKind
     }
     else if (hasStraight) {
