@@ -43,7 +43,7 @@ object Card {
     }
   }
 
-  def parseRank(normalized: String): Option[Int] = {
+  private def parseRank(normalized: String): Option[Int] = {
     val rank = normalized match {
       case r if r.startsWith("J") => Some(11)
       case r if r.startsWith("Q") => Some(12)
@@ -62,7 +62,7 @@ object Card {
     rank
   }
 
-  def ParseSuit(normalized: String): Option[Suit.Value] = {
+  private def ParseSuit(normalized: String): Option[Suit.Value] = {
     normalized.last match {
       case 'C' => Some(Suit.Clubs)
       case 'D' => Some(Suit.Diamonds)
