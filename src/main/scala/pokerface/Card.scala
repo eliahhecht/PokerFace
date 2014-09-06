@@ -27,7 +27,7 @@ case class Card(val suit: Suit, val rank: Int) {
 
 
 object Card {
-  def Parse(s: String) = {
+  def parse(s: String) = {
     val normalized = s.toUpperCase
 
     val suit = ParseSuit(normalized)

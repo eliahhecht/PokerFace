@@ -41,11 +41,11 @@ class HandSpec extends FlatSpec {
 
   it should "parse '2s 3h kd 7d as' correctly" in {
     val hand = Hand.parse("2s 3h kd 7d as").get
-    val expected = new Hand(Set(Card.Parse("2s").get,
-      Card.Parse("3h").get,
-      Card.Parse("kd").get,
-      Card.Parse("7d").get,
-      Card.Parse("as").get))
+    val expected = new Hand(Set(Card.parse("2s").get,
+      Card.parse("3h").get,
+      Card.parse("kd").get,
+      Card.parse("7d").get,
+      Card.parse("as").get))
 
     assert(hand == expected)
   }
