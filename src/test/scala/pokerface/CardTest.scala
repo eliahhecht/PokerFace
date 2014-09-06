@@ -83,6 +83,16 @@ class CardTestSpec extends FlatSpec {
     assert(card.isEmpty)
   }
 
+  it should "parse foo as none" in {
+    val card = Card.Parse("foo")
+    assert(card.isEmpty)
+  }
+
+  it should "parse A as Ace" in {
+    val card = Card.Parse("ad").get
+    assert(card.rank == 1)
+  }
+
   it should "toString 9s as 9S" in {
     val card = Card.Parse("9s").get
     assert(card.toString == "9S")

@@ -25,7 +25,13 @@ class Hand(val cards: Set[Card]) {
 object Hand {
 
   def parse(s: String): Option[Hand] = {
-    Some(new Hand((1 to 5).map(n => new Card(Suit.Diamonds, n)).toSet))
+    val cards = s.split(" ").flatMap(Card.Parse(_))
+    if (cards.length == 5) {
+      Some(new Hand(cards.toSet))
+    }
+    else {
+      None
+    }
   }
 
 }

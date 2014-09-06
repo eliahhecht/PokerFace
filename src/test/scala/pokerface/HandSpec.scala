@@ -33,9 +33,25 @@ class HandSpec extends FlatSpec {
     cards
   }
 
-  it should "parse '1d 2d 3d 4d 5d' as a valid hand" in {
+  it should "parse '1d 2d 3d 4d 5d' correctly" in {
     val hand = Hand.parse("1d 2d 3d 4d 5d").get
     val expected = new Hand(GetCards(5))
     assert(hand == expected)
+  }
+
+  it should "parse '2s 3h kd 7d as' correctly" in {
+    val hand = Hand.parse("2s 3h kd 7d as").get
+    val expected = new Hand(Set(Card.Parse("2s").get,
+      Card.Parse("3h").get,
+      Card.Parse("kd").get,
+      Card.Parse("7d").get,
+      Card.Parse("as").get))
+
+    assert(hand == expected)
+  }
+
+  it should "return none on unparseable hand" in {
+    val hand = Hand.parse("foo bar baz")
+    assert(hand.isEmpty)
   }
 }

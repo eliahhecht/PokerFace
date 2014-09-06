@@ -25,6 +25,7 @@ case class Card(val suit: Suit, val rank: Int) {
 
 }
 
+
 object Card {
   def Parse(s: String) = {
     val normalized = s.toUpperCase
@@ -47,7 +48,9 @@ object Card {
       case r if r.startsWith("J") => Some(11)
       case r if r.startsWith("Q") => Some(12)
       case r if r.startsWith("K") => Some(13)
-      case r => Some(r.dropRight(1).toInt)
+      case r if r.startsWith("A") => Some(1)
+      case _ if normalized.matches("\\d+.") => Some(normalized.dropRight(1).toInt)
+      case _ => None
     }
 
     if (rank.isDefined) {
