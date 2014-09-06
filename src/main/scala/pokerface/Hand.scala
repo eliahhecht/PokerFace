@@ -8,7 +8,6 @@ import scala.collection.concurrent.RDCSS_Descriptor
 class Hand(val cards: Set[Card]) {
 
   def hasFullHouse: Boolean = {
-    val groupedByRank = cards.groupBy(_.rank)
     val hasPair = groupedByRank.exists(_._2.size == 2)
     val hasThreeOfAKind = groupedByRank.exists(_._2.size == 3)
 
@@ -16,12 +15,33 @@ class Hand(val cards: Set[Card]) {
   }
 
   def hasJacksOrBetterPair: Boolean = {
-    val groupedByRank = cards.groupBy(_.rank)
     return groupedByRank.exists(g => g._2.size == 2 && g._1 >= 11)
   }
 
+  def hasFourOfAKind: Boolean = {
+    return groupedByRank.exists(_._2.size == 4)
+  }
+
+  def groupedByRank = cards.groupBy(_.rank)
+
+  def hasStraight: Boolean = {
+    val sorted = cards.toList.sortBy(_.rank)
+    for (cardIdx <- 1 to 4) {
+      if (sorted(cardIdx).rank - sorted(cardIdx - 1).rank != 1) {
+        return false
+      }
+    }
+    return true
+  }
+
   def getRank = {
-    if (hasFullHouse) {
+    if (hasFourOfAKind) {
+      HandType.FourOfAKind
+    }
+    else if (hasStraight) {
+      HandType.Straight
+    }
+    else if (hasFullHouse) {
       HandType.FullHouse
     }
     else if (hasJacksOrBetterPair) {
