@@ -46,8 +46,15 @@ class Hand(val cards: Set[Card]) {
     return hasStraight && groupedBySuit.size == 1
   }
 
+  def hasRoyalFlush: Boolean = {
+    return hasStraightFlush && cards.exists(_.rank == 13) && cards.exists(_.rank == 1)
+  }
+
   def getRank = {
-    if (hasStraightFlush) {
+    if (hasRoyalFlush) {
+      HandType.RoyalFlush
+    }
+    else if (hasStraightFlush) {
       HandType.StraightFlush
     }
     else if (hasFourOfAKind) {
