@@ -20,7 +20,7 @@ class Hand(val cards: Set[Card]) {
     return groupedByRank.exists(g => g._2.size == 2 && g._1 >= 11)
   }
 
-  def getType = {
+  def getRank = {
     if (hasFullHouse) {
       HandType.FullHouse
     }

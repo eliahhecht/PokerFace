@@ -23,6 +23,6 @@ class HandTypingSpec extends FlatSpec with Matchers with TableDrivenPropertyChec
   it should "rank hands correctly" in forAll(hands) {(handString: String, expectedRank: HandType) =>
     val hand = Hand.parse(handString)
     assume(hand.isDefined)
-    hand.get.getType shouldEqual expectedRank
+    hand.get.getRank shouldEqual expectedRank
   }
 }
