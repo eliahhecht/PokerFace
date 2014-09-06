@@ -1,5 +1,6 @@
+package pokerface
+
 import org.scalatest.FlatSpec
-import pokerface.{Suit, Card, Hand}
 
 /**
  * Created by Eliah on 9/6/2014.
@@ -30,5 +31,11 @@ class HandSpec extends FlatSpec {
   def GetCards(numberOfCards: Int): Set[Card] = {
     val cards = (1 to numberOfCards).map(n => new Card(Suit.Diamonds, n)).toSet
     cards
+  }
+
+  it should "parse '1d 2d 3d 4d 5d' as a valid hand" in {
+    val hand = Hand.parse("1d 2d 3d 4d 5d").get
+    val expected = new Hand(GetCards(5))
+    assert(hand == expected)
   }
 }

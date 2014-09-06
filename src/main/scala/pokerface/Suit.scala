@@ -5,5 +5,9 @@ package pokerface
  */
 object Suit extends Enumeration {
   type Suit = Value
-  val Diamonds, Clubs, Hearts, Spades = Value
+
+  val Diamonds = Value("D")
+  val Clubs = Value("C")
+  val Hearts = Value("H")
+  val Spades = Value("S")
 }

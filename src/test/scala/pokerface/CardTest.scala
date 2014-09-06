@@ -1,5 +1,6 @@
+package pokerface
+
 import org.scalatest.FlatSpec
-import pokerface.{Card, Suit}
 
 /**
  * Created by Eliah on 9/6/2014.
@@ -82,5 +83,21 @@ class CardTestSpec extends FlatSpec {
     assert(card.isEmpty)
   }
 
+  it should "toString 9s as 9S" in {
+    val card = Card.Parse("9s").get
+    assert(card.toString == "9S")
+  }
+
+  it should "toString KD as KD" in {
+    val card = Card.Parse("kd").get
+    assert(card.toString == "KD")
+  }
+
+  it should "compare equal cards as equal" in {
+    val card1 = Card.Parse("1d").get
+    val card2 = Card.Parse("1d").get
+
+    assert(card1 == card2)
+  }
 
 }

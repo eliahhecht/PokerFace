@@ -5,10 +5,22 @@ import pokerface.Suit.Suit
 /**
  * Created by Eliah on 9/6/2014.
  */
-class Card(val suit: Suit, val rank: Int) {
+case class Card(val suit: Suit, val rank: Int) {
 
   if (rank < 1 || rank > 13) {
     throw new IllegalArgumentException("Rank must be between 1 and 13")
+  }
+
+  override def toString =  {
+    val rankString = rank match {
+      case 11 => "J"
+      case 12 => "Q"
+      case 13 => "K"
+      case 1 => "A"
+      case r => r
+    }
+
+    rankString + suit.toString
   }
 
 }
