@@ -1,11 +1,11 @@
 package pokerface
 
-import org.scalatest.FlatSpec
+import org.scalatest.{Matchers, FlatSpec}
 
 /**
  * Created by Eliah on 9/6/2014.
  */
-class HandSpec extends FlatSpec {
+class HandSpec extends FlatSpec with Matchers {
 
   behavior of "pokerface.Hand"
 
@@ -58,5 +58,10 @@ class HandSpec extends FlatSpec {
   it should "trim before parsing" in {
     val hand = Hand.parse(" 2s 3d 4s 5d 6s ")
     assert(hand.isDefined)
+  }
+
+  it should "parse an empty string as an empty set of cards" in {
+    val hand = CardSetParser.parse("")
+    hand shouldBe empty
   }
 }

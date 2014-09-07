@@ -148,7 +148,7 @@ object Hand {
 }
 
 object CardSetParser {
-  def parse(s: String): Seq[Card] = s.trim.split("\\s+").flatMap(Card.parse)
+  def parse(s: String): Seq[Card] = s.trim.split("\\s+").filter(!_.isEmpty).flatMap(Card.parse)
 }
 
 
