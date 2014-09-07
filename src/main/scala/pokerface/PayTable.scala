@@ -5,7 +5,7 @@ package pokerface
  */
 object PayTable {
 
-  def getValue(hand: Hand): Int = {
+  def getValue(hand: Hand): Int =
     hand.getRank match {
       case HandType.RoyalFlush => 5000
       case HandType.StraightFlush => 1500
@@ -18,5 +18,4 @@ object PayTable {
       case HandType.JacksOrBetter => 10
       case HandType.Nothing => 0
     }
-  }
 }
