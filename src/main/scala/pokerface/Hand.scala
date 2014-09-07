@@ -42,12 +42,15 @@ class Hand(val cards: Set[Card]) {
   }
 
   def hasStraightFlush: Boolean = {
-    val groupedBySuit = cards.groupBy(_.suit)
-    return hasStraight && groupedBySuit.size == 1
+    return hasStraight && hasFlush
   }
 
   def hasRoyalFlush: Boolean = {
     return hasStraightFlush && cards.exists(_.rank == 13) && cards.exists(_.rank == 1)
+  }
+
+  def hasFlush: Boolean = {
+    return cards.groupBy(_.suit).size == 1
   }
 
   def getRank = {
@@ -56,6 +59,9 @@ class Hand(val cards: Set[Card]) {
     }
     else if (hasStraightFlush) {
       HandType.StraightFlush
+    }
+    else if (hasFlush) {
+      HandType.Flush
     }
     else if (hasFourOfAKind) {
       HandType.FourOfAKind

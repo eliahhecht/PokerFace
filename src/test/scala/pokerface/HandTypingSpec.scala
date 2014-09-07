@@ -25,6 +25,7 @@ class HandTypingSpec extends FlatSpec with Matchers with TableDrivenPropertyChec
     ("kd ac 1d 2d 3d", HandType.Nothing),
     ("3d 3s 5d 6d 7d", HandType.Nothing),
     ("10d jd qd kd ad", HandType.RoyalFlush),
+    ("1d 3d 5d 7d 9d", HandType.Flush),
     ("9s 10s js qs ks", HandType.StraightFlush)
 
   )
