@@ -1,5 +1,7 @@
 package pokerface
 
+import scala.collection.immutable.HashSet
+
 /**
  * Created by Eliah on 9/6/2014.
  */
@@ -12,6 +14,20 @@ class Hand(val cards: Seq[Card]) extends Seq[Card] {
     hasPair && hasThreeOfAKind
   }
 
+  private val rankMask: Long = cards.map(c => math.pow(2, c.rank - 1).toInt).foldLeft(0){_ | _}
+
+  private val straights: HashSet[Long] = HashSet(
+    0x1F00,
+    0xF80,
+    0x7C0,
+    0x3E0,
+    0xF8,
+    0x7C,
+    0x3E,
+    0x1F,
+    0x1E01
+  )
+
   private def hasJacksOrBetterPair: Boolean = {
     groupedByRank.exists(g => g._2.size == 2 && (g._1 >= 11 || g._1 == 1))
   }
@@ -21,17 +37,9 @@ class Hand(val cards: Seq[Card]) extends Seq[Card] {
   }
 
   private lazy val groupedByRank = cards.groupBy(_.rank)
-  private lazy val sorted = cards.sortBy(_.rank)
-
-  private def hasAceHighStraight: Boolean = {
-    sorted.map(_.rank).equals(Seq(1, 10, 11, 12, 13))
-  }
 
   private def hasStraight: Boolean = {
-    if (hasAceHighStraight) {
-      return true
-    }
-    return groupedByRank.size == 5 && (sorted.last.rank - sorted.head.rank == 4)
+    return straights.contains(rankMask)
   }
 
   private def hasStraightFlush: Boolean = {
@@ -124,7 +132,7 @@ object Hand {
 }
 
 object CardSetParser {
-  def parse(s: String): Seq[Card] =  s.trim.split("\\s+").flatMap(Card.parse)
+  def parse(s: String): Seq[Card] = s.trim.split("\\s+").flatMap(Card.parse)
 }
 
 
