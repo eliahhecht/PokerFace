@@ -7,28 +7,28 @@ import scala.collection.concurrent.RDCSS_Descriptor
  */
 class Hand(val cards: Set[Card]) {
 
-  def hasFullHouse: Boolean = {
+  private def hasFullHouse: Boolean = {
     val hasPair = groupedByRank.exists(_._2.size == 2)
     val hasThreeOfAKind = groupedByRank.exists(_._2.size == 3)
 
     return hasPair && hasThreeOfAKind
   }
 
-  def hasJacksOrBetterPair: Boolean = {
+  private def hasJacksOrBetterPair: Boolean = {
     return groupedByRank.exists(g => g._2.size == 2 && g._1 >= 11)
   }
 
-  def hasFourOfAKind: Boolean = {
+  private def hasFourOfAKind: Boolean = {
     return groupedByRank.exists(_._2.size == 4)
   }
 
-  def groupedByRank = cards.groupBy(_.rank)
+  private def groupedByRank = cards.groupBy(_.rank)
 
-  def hasAceHighStraight(sorted: Seq[Card]): Boolean = {
+  private def hasAceHighStraight(sorted: Seq[Card]): Boolean = {
     return (sorted.map(_.rank).equals(Seq(1, 10, 11, 12, 13)))
   }
 
-  def hasStraight: Boolean = {
+  private def hasStraight: Boolean = {
     val sorted = cards.toList.sortBy(_.rank)
     if (hasAceHighStraight(sorted)) {
       return true
@@ -41,23 +41,23 @@ class Hand(val cards: Set[Card]) {
     return true
   }
 
-  def hasStraightFlush: Boolean = {
+  private def hasStraightFlush: Boolean = {
     return hasStraight && hasFlush
   }
 
-  def hasRoyalFlush: Boolean = {
+  private def hasRoyalFlush: Boolean = {
     return hasStraightFlush && cards.exists(_.rank == 13) && cards.exists(_.rank == 1)
   }
 
-  def hasFlush: Boolean = {
+  private def hasFlush: Boolean = {
     return cards.groupBy(_.suit).size == 1
   }
 
-  def hasThreeOfAKind: Boolean = {
+  private def hasThreeOfAKind: Boolean = {
     return groupedByRank.exists(_._2.size == 3)
   }
 
-  def hasTwoPairs: Boolean = {
+  private def hasTwoPairs: Boolean = {
     return groupedByRank.count(_._2.size == 2) == 2
   }
 
