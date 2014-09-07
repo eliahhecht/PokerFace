@@ -12,14 +12,21 @@ class SuggesterSpec extends FlatSpec with Matchers with TableDrivenPropertyCheck
 
   val hands = Table(
     ("hand", "expected keeps"),
+    ("4s as 7h 6c 9d", "4s as"),
     ("10d jd qd kd ad", "10d jd qd kd ad"),
-    ("10d jd qd kd 3s", "10d jd qd kd")
+    ("10d jd qd kd 3s", "10d jd qd kd"),
+    ("10d jd js kd 3s", "jd js"),
+    ("jd 3d 5s 8h 9s", "jd")
   )
 
   it should "rank hands correctly" in forAll(hands) {(handString: String, expectedKeeps: String) =>
     val hand = Hand.parse(handString)
     assume(hand.isDefined)
-    val keeps = new Suggester().suggestKeeps(hand.get)
+    val suggestion = new Suggester().suggestKeeps(hand.get)
+
+    val keeps = suggestion.keeps
+    val ev = suggestion.expectedValue
+    println(s"From $hand, keep $keeps worth $ev")
 
     keeps should contain theSameElementsAs CardSetParser.parse(expectedKeeps)
   }

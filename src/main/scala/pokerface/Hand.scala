@@ -13,30 +13,25 @@ class Hand(val cards: Seq[Card]) extends Seq[Card] {
   }
 
   private def hasJacksOrBetterPair: Boolean = {
-    groupedByRank.exists(g => g._2.size == 2 && g._1 >= 11)
+    groupedByRank.exists(g => g._2.size == 2 && (g._1 >= 11 || g._1 == 1))
   }
 
   private def hasFourOfAKind: Boolean = {
     groupedByRank.exists(_._2.size == 4)
   }
 
-  private def groupedByRank = cards.groupBy(_.rank)
+  private lazy val groupedByRank = cards.groupBy(_.rank)
+  private lazy val sorted = cards.sortBy(_.rank)
 
-  private def hasAceHighStraight(sorted: Seq[Card]): Boolean = {
+  private def hasAceHighStraight: Boolean = {
     sorted.map(_.rank).equals(Seq(1, 10, 11, 12, 13))
   }
 
   private def hasStraight: Boolean = {
-    val sorted = cards.toList.sortBy(_.rank)
-    if (hasAceHighStraight(sorted)) {
+    if (hasAceHighStraight) {
       return true
     }
-    for (cardIdx <- 1 to 4) {
-      if (sorted(cardIdx).rank - sorted(cardIdx - 1).rank != 1) {
-        return false
-      }
-    }
-    true
+    return groupedByRank.size == 5 && (sorted.last.rank - sorted.head.rank == 4)
   }
 
   private def hasStraightFlush: Boolean = {
@@ -129,7 +124,7 @@ object Hand {
 }
 
 object CardSetParser {
-  def parse(s: String): Seq[Card] =  s.split(" ").flatMap(Card.parse)
+  def parse(s: String): Seq[Card] =  s.trim.split("\\s+").flatMap(Card.parse)
 }
 
 

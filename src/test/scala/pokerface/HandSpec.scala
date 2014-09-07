@@ -54,4 +54,9 @@ class HandSpec extends FlatSpec {
     val hand = Hand.parse("foo bar baz")
     assert(hand.isEmpty)
   }
+
+  it should "trim before parsing" in {
+    val hand = Hand.parse(" 2s 3d 4s 5d 6s ")
+    assert(hand.isDefined)
+  }
 }

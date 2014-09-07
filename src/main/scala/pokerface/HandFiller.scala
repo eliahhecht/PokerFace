@@ -1,8 +1,5 @@
 package pokerface
 
-import scala.collection.immutable.IndexedSeq
-import scala.collection.mutable.ListBuffer
-
 
 /**
  * Created by Eliah on 9/6/2014.
@@ -18,6 +15,15 @@ class HandFiller {
       return restOfDeck.getCards.combinations(spotsToFill)
         .map(fill => new Hand(keeps ++ fill))
         .toSeq
+    }
+  }
+
+  def PartialFills(hand: Hand, spots: Int) : Seq[Seq[Card]] = {
+    val restOfDeck = new Deck().except(hand.cards)
+    if (spots == 0) {
+      return Seq(Seq.empty)
+    } else {
+      return restOfDeck.getCards.combinations(spots).toSeq
     }
   }
 }
