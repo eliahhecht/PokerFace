@@ -8,13 +8,12 @@ import scala.collection.immutable.HashSet
 class Hand(val cards: Seq[Card]) extends Seq[Card] {
 
   private def hasFullHouse: Boolean = {
-    val hasPair = groupedByRank.exists(_._2.size == 2)
-    val hasThreeOfAKind = groupedByRank.exists(_._2.size == 3)
-
-    hasPair && hasThreeOfAKind
+    rankCounts.exists(_ == 2) && rankCounts.exists(_ == 3)
   }
 
-  private val rankMask: Long = cards.map(c => math.pow(2, c.rank - 1).toInt).foldLeft(0){_ | _}
+  private val rankMask: Long = cards.map(c => math.pow(2, c.rank - 1).toInt).foldLeft(0) {
+    _ | _
+  }
 
   private val straights: HashSet[Long] = HashSet(
     0x1F00,
@@ -28,15 +27,25 @@ class Hand(val cards: Seq[Card]) extends Seq[Card] {
     0x1E01
   )
 
-  private def hasJacksOrBetterPair: Boolean = {
-    groupedByRank.exists(g => g._2.size == 2 && (g._1 >= 11 || g._1 == 1))
+  private val rankCounts = Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+  private def countRanks = {
+    for (card <- cards) {
+      rankCounts(card.rank - 1) = rankCounts(card.rank - 1) + 1
+    }
   }
+
+  countRanks
+
+  private def hasJacksOrBetterPair: Boolean = (
+    rankCounts(0) == 2
+      || rankCounts(10) == 2
+      || rankCounts(11) == 2
+      || rankCounts(12) == 2)
 
   private def hasFourOfAKind: Boolean = {
-    groupedByRank.exists(_._2.size == 4)
+    rankCounts.exists(_ == 4)
   }
-
-  private lazy val groupedByRank = cards.groupBy(_.rank)
 
   private def hasStraight: Boolean = {
     return straights.contains(rankMask)
@@ -55,11 +64,15 @@ class Hand(val cards: Seq[Card]) extends Seq[Card] {
   }
 
   private def hasThreeOfAKind: Boolean = {
-    groupedByRank.exists(_._2.size == 3)
+    rankCounts.exists(_ == 3)
   }
 
   private def hasTwoPairs: Boolean = {
-    groupedByRank.count(_._2.size == 2) == 2
+    rankCounts.count(_ == 2) == 2
+  }
+
+  private def noGroups: Boolean = {
+    !rankCounts.exists(_ > 1)
   }
 
   def getRank = {
@@ -72,11 +85,14 @@ class Hand(val cards: Seq[Card]) extends Seq[Card] {
     else if (hasFlush) {
       HandType.Flush
     }
-    else if (hasFourOfAKind) {
-      HandType.FourOfAKind
-    }
     else if (hasStraight) {
       HandType.Straight
+    }
+    else if (noGroups) {
+      HandType.Nothing
+    }
+    else if (hasFourOfAKind) {
+      HandType.FourOfAKind
     }
     else if (hasFullHouse) {
       HandType.FullHouse
