@@ -39,7 +39,7 @@ class Suggester {
 
   val memoizedFillsBySize = new mutable.HashMap[Int, Seq[Seq[Card]]]
 
-  private def expectedValue(hand: Hand, keeps: Seq[Card]): Double = {
+  private def expectedValueBruteForce(hand: Hand, keeps: Seq[Card]): Double = {
     if (!memoizedFillsBySize.contains(keeps.size)) {
       memoizedFillsBySize(keeps.size) = new HandFiller().PartialFills(hand, 5 - keeps.size)
     }
@@ -47,8 +47,30 @@ class Suggester {
     fills.par.map(f => PayTable.getValue(new Hand(f))).sum.toFloat / fills.size
   }
 
-  private def expectedValueHardcodes(hand: Hand, keeps: Seq[Card]): Double = {
-    1
+  def evalTwo(cards: Seq[Card]): Double = {
+    val totalThrees = 19600.0
+    if (cards(0).rank == cards(1).rank) {
+      val threesOfAKind = 12*4
+      val pickUpThird = 6
+      val pickUpFour = 3
+      val highPair = 1
+    }
+    0
+  }
+
+  def evalThree(cards: Seq[Card]): Double = {
+    0
+  }
+
+  private def expectedValue(hand: Hand, keeps: Seq[Card]): Double = {
+    keeps.size match {
+      case 0 => 6.387
+      case 1 => 7.854 // assuming it's a high card keep
+      case 2 => expectedValueBruteForce(hand, keeps)
+      case 3 => expectedValueBruteForce(hand, keeps)
+      case 4 => expectedValueBruteForce(hand, keeps)
+      case 5 => PayTable.getValue(new Hand(keeps))
+    }
   }
 
 }

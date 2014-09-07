@@ -7,7 +7,6 @@ import scala.io.StdIn
  */
  object ConsoleApp extends App {
 
-  val suggester = new Suggester
 
   while (true) {
     print("Input hand: ")
@@ -17,6 +16,7 @@ import scala.io.StdIn
       println("Couldn't parse that hand. Please try again.")
     }
     else {
+      val suggester = new Suggester
       val sugg = suggester.suggestKeeps(Hand.parse(handStr).get)
       val keeps = sugg.keeps
       val ev = sugg.expectedValue

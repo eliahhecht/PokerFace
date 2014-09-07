@@ -20,6 +20,7 @@ class Hand(val cards: Seq[Card]) extends Seq[Card] {
     0xF80,
     0x7C0,
     0x3E0,
+    0x1F0,
     0xF8,
     0x7C,
     0x3E,
