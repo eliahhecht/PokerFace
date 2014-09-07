@@ -53,6 +53,10 @@ class Hand(val cards: Set[Card]) {
     return cards.groupBy(_.suit).size == 1
   }
 
+  def hasThreeOfAKind: Boolean = {
+    return groupedByRank.exists(_._2.size == 3)
+  }
+
   def getRank = {
     if (hasRoyalFlush) {
       HandType.RoyalFlush
@@ -71,6 +75,9 @@ class Hand(val cards: Set[Card]) {
     }
     else if (hasFullHouse) {
       HandType.FullHouse
+    }
+    else if (hasThreeOfAKind) {
+      HandType.ThreeOfAKind
     }
     else if (hasJacksOrBetterPair) {
       HandType.JacksOrBetter
