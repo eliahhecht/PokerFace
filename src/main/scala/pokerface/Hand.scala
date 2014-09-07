@@ -1,31 +1,29 @@
 package pokerface
 
-import scala.collection.concurrent.RDCSS_Descriptor
-
 /**
  * Created by Eliah on 9/6/2014.
  */
-class Hand(val cards: Set[Card]) {
+class Hand(val cards: Seq[Card]) extends Seq[Card] {
 
   private def hasFullHouse: Boolean = {
     val hasPair = groupedByRank.exists(_._2.size == 2)
     val hasThreeOfAKind = groupedByRank.exists(_._2.size == 3)
 
-    return hasPair && hasThreeOfAKind
+    hasPair && hasThreeOfAKind
   }
 
   private def hasJacksOrBetterPair: Boolean = {
-    return groupedByRank.exists(g => g._2.size == 2 && g._1 >= 11)
+    groupedByRank.exists(g => g._2.size == 2 && g._1 >= 11)
   }
 
   private def hasFourOfAKind: Boolean = {
-    return groupedByRank.exists(_._2.size == 4)
+    groupedByRank.exists(_._2.size == 4)
   }
 
   private def groupedByRank = cards.groupBy(_.rank)
 
   private def hasAceHighStraight(sorted: Seq[Card]): Boolean = {
-    return (sorted.map(_.rank).equals(Seq(1, 10, 11, 12, 13)))
+    sorted.map(_.rank).equals(Seq(1, 10, 11, 12, 13))
   }
 
   private def hasStraight: Boolean = {
@@ -38,27 +36,27 @@ class Hand(val cards: Set[Card]) {
         return false
       }
     }
-    return true
+    true
   }
 
   private def hasStraightFlush: Boolean = {
-    return hasStraight && hasFlush
+    hasStraight && hasFlush
   }
 
   private def hasRoyalFlush: Boolean = {
-    return hasStraightFlush && cards.exists(_.rank == 13) && cards.exists(_.rank == 1)
+    hasStraightFlush && cards.exists(_.rank == 13) && cards.exists(_.rank == 1)
   }
 
   private def hasFlush: Boolean = {
-    return cards.groupBy(_.suit).size == 1
+    cards.groupBy(_.suit).size == 1
   }
 
   private def hasThreeOfAKind: Boolean = {
-    return groupedByRank.exists(_._2.size == 3)
+    groupedByRank.exists(_._2.size == 3)
   }
 
   private def hasTwoPairs: Boolean = {
-    return groupedByRank.count(_._2.size == 2) == 2
+    groupedByRank.count(_._2.size == 2) == 2
   }
 
   def getRank = {
@@ -98,17 +96,22 @@ class Hand(val cards: Set[Card]) {
     throw new IllegalArgumentException("Number of cards must be exactly 5")
   }
 
-  override def toString = cards.mkString(",")
+  override def toString() = cards.mkString(",")
 
   override def equals(obj: Any): Boolean = {
-    if (!(obj.isInstanceOf[Hand])) {
-      return false
+    if (!obj.isInstanceOf[Hand]) {
+      false
     } else {
       val hands = obj.asInstanceOf[Hand]
-      return hands.cards.equals(this.cards)
+      hands.cards.equals(this.cards)
     }
   }
 
+  override def length: Int = cards.length
+
+  override def apply(idx: Int): Card = cards(idx)
+
+  override def iterator: Iterator[Card] = cards.iterator
 }
 
 object Hand {
@@ -116,7 +119,7 @@ object Hand {
   def parse(s: String): Option[Hand] = {
     val cards = CardSetParser.parse(s)
     if (cards.length == 5) {
-      Some(new Hand(cards.toSet))
+      Some(new Hand(cards))
     }
     else {
       None
@@ -126,7 +129,7 @@ object Hand {
 }
 
 object CardSetParser {
-  def parse(s: String): Seq[Card] =  s.split(" ").flatMap(Card.parse(_))
+  def parse(s: String): Seq[Card] =  s.split(" ").flatMap(Card.parse)
 }
 
 

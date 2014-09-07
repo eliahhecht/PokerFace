@@ -23,6 +23,8 @@ case class Card(val suit: Suit, val rank: Int) {
     rankString + suit.toString
   }
 
+  override def hashCode = toString.hashCode
+
 }
 
 

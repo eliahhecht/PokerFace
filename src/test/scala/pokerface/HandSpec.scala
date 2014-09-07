@@ -28,8 +28,8 @@ class HandSpec extends FlatSpec {
     }
   }
 
-  def GetCards(numberOfCards: Int): Set[Card] = {
-    val cards = (1 to numberOfCards).map(n => new Card(Suit.Diamonds, n)).toSet
+  def GetCards(numberOfCards: Int): Seq[Card] = {
+    val cards = (1 to numberOfCards).map(n => new Card(Suit.Diamonds, n)).toSeq
     cards
   }
 
@@ -41,7 +41,7 @@ class HandSpec extends FlatSpec {
 
   it should "parse '2s 3h kd 7d as' correctly" in {
     val hand = Hand.parse("2s 3h kd 7d as").get
-    val expected = new Hand(Set(Card.parse("2s").get,
+    val expected = new Hand(Seq(Card.parse("2s").get,
       Card.parse("3h").get,
       Card.parse("kd").get,
       Card.parse("7d").get,

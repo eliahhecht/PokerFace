@@ -12,7 +12,8 @@ class SuggesterSpec extends FlatSpec with Matchers with TableDrivenPropertyCheck
 
   val hands = Table(
     ("hand", "expected keeps"),
-    ("10d jd qd kd ad", "10d jd qd kd ad")
+    ("10d jd qd kd ad", "10d jd qd kd ad"),
+    ("10d jd qd kd 3s", "10d jd qd kd")
   )
 
   it should "rank hands correctly" in forAll(hands) {(handString: String, expectedKeeps: String) =>
