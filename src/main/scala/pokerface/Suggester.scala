@@ -30,6 +30,7 @@ class Suggester {
     }
     if (keeps.size == 2
       && keeps(0).suit != keeps(1).suit
+      && keeps(0).rank != keeps(1).rank
       && keeps.exists(k => k.rank > 1 && k.rank < 10)) {
       return false
     }
@@ -44,6 +45,10 @@ class Suggester {
     }
     val fills = memoizedFillsBySize(keeps.size).map(fill => fill ++ keeps)
     fills.par.map(f => PayTable.getValue(new Hand(f))).sum.toFloat / fills.size
+  }
+
+  private def expectedValueHardcodes(hand: Hand, keeps: Seq[Card]): Double = {
+    1
   }
 
 }
