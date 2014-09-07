@@ -7,7 +7,7 @@ import pokerface.HandType.HandType
 /**
  * Created by Eliah on 9/6/2014.
  */
-class HandTypingSpec extends FlatSpec with Matchers with TableDrivenPropertyChecks{
+class HandRankSpec extends FlatSpec with Matchers with TableDrivenPropertyChecks{
 
   behavior of "pokerface.Hand"
 
