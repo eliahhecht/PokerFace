@@ -47,10 +47,4 @@ class HandFillerSpec extends FlatSpec with Matchers {
     fills.size shouldEqual 178365
   }
 
-  it should "fill a no-card hand" in {
-    val keeps = Seq.empty
-    val fills = new HandFiller().AllFills(sampleHand, keeps)
-
-    fills.size shouldEqual 1533939
-  }
 }
