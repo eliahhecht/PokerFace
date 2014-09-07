@@ -43,7 +43,7 @@ class Suggester {
       memoizedFillsBySize(keeps.size) = new HandFiller().PartialFills(hand, 5 - keeps.size)
     }
     val fills = memoizedFillsBySize(keeps.size).map(fill => fill ++ keeps)
-    fills.map(f => PayTable.getValue(new Hand(f))).sum.toFloat / fills.size
+    fills.par.map(f => PayTable.getValue(new Hand(f))).sum.toFloat / fills.size
   }
 
 }
