@@ -27,7 +27,8 @@ class HandRankSpec extends FlatSpec with Matchers with TableDrivenPropertyChecks
     ("10d jd qd kd ad", HandType.RoyalFlush),
     ("1d 3d 5d 7d 9d", HandType.Flush),
     ("9s 10s js qs ks", HandType.StraightFlush),
-    ("3d 3s 3h jd qd", HandType.ThreeOfAKind)
+    ("3d 3s 3h jd qd", HandType.ThreeOfAKind),
+    ("3d 3s 5d 5s js", HandType.TwoPair)
   )
 
   it should "rank hands correctly" in forAll(hands) {(handString: String, expectedRank: HandType) =>

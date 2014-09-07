@@ -57,6 +57,10 @@ class Hand(val cards: Set[Card]) {
     return groupedByRank.exists(_._2.size == 3)
   }
 
+  def hasTwoPairs: Boolean = {
+    return groupedByRank.count(_._2.size == 2) == 2
+  }
+
   def getRank = {
     if (hasRoyalFlush) {
       HandType.RoyalFlush
@@ -78,6 +82,9 @@ class Hand(val cards: Set[Card]) {
     }
     else if (hasThreeOfAKind) {
       HandType.ThreeOfAKind
+    }
+    else if (hasTwoPairs) {
+      HandType.TwoPair
     }
     else if (hasJacksOrBetterPair) {
       HandType.JacksOrBetter
